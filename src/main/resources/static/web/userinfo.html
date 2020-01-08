@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <script src="../jq/jquery-3.4.1.js"></script>
+</head>
+<body>
+<table align="center" border="1">
+    <tr align="center">
+        <td>ID</td>
+        <td>用户名</td>
+        <td>密码</td>
+        <td>性别</td>
+        <td>创建日期</td>
+        <td>操作</td>
+    </tr>
+    <tbody id="user-list">
+    <tr align="center">
+        <td><p>
+            <p/></td>
+        <td><p>
+            <p/></td>
+        <td><p>
+            <p/></td>
+        <td><p>
+            <p/></td>
+        <td><p>
+            <p/></td>
+        <td>
+            <span><a href="change.html"><p>修改</p></a></span> <span><input type="button" value="删除"
+                                                                          onclick="del(id)"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        showUserInfo();
+    });
+
+    function showUserInfo() {
+        $("#user-list").empty();
+        $.ajax({
+            "url": "/user/findall",
+            "type": "get",
+            "dataType": "json",
+            "success": function (json) {
+                if (json.state == 2000) {
+                    let users = json.data;
+                    for (let i = 0; i < users.length; i++) {
+                        let html = '<tr>' +
+                            '<td width="50"><p>#{id}<p/></td>' +
+                            '<td width="100px"><p>#{username}<p/></td>' +
+                            '<td width="100px"><p>#{password}<p/></td>' +
+                            '<td width="50px"><p>#{gender}<p/></td>' +
+                            '<td width="150px"><p>#{creDate}<p/></td>' +
+                            '<td width="100px"><span><a href="change.html"><p>修改</p><a/></span> <span><input id="#{delid}" type="button" value="删除" onclick="del(id)"></span></td>' +
+                            '</tr>';
+                        html = html.replace(/#{id}/g, users[i].id);
+                        html = html.replace(/#{username}/g, users[i].username);
+                        html = html.replace(/#{password}/g, users[i].password);
+                        html = html.replace(/#{gender}/g, users[i].gender);
+                        html = html.replace(/#{creDate}/g, users[i].creDate);
+                        html = html.replace(/#{delid}/g, users[i].id);
+
+                        $("#user-list").append(html);
+                    }
+                }
+            }
+        });
+    }
+
+    function del(id) {
+        $.ajax({
+            "url": "/user/" + id + "/del",
+            "type": "get",
+            "dataType": "json",
+            "success": function (json) {
+                if (json.state == 2000) {
+                    alert("删除成功!");
+                    showUserInfo();
+                } else {
+                    alert("删除失败" + json.message);
+                }
+            },
+            "error": function () {
+                alert("FUCK OFF!");
+            }
+        });
+    }
+
+</script>
+</html>

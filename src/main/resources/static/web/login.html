@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="../jq/jquery-3.4.1.js"></script>
+</head>
+<body>
+<form id="form-login">
+    <table align="center">
+        <tr align="left">
+            <td>用户名</td>
+            <td><input name="username" type="text"></td>
+        </tr>
+        <tr align="left">
+            <td>密码</td>
+            <td><input name="password" type="password"></td>
+        </tr>
+        <tr align="left">
+            <td>验证码</td>
+            <td><input name="code" type="text"></td>
+        </tr>
+        <tr align="center">
+            <td colspan="2"><input id="btn-login" type="button" value="登录"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="/user/vercode" alt=""></td>
+        </tr>
+    </table>
+</form>
+</body>
+
+<script type="text/javascript">
+    $("#btn-login").click(function () {
+        $.ajax({
+            "url":"/user/login",
+            "type":"post",
+            "data":$("#form-login").serialize(),
+            "dataType":"json",
+            "success":function (json) {
+                if (json.state==2000){
+                    alert("登录成功!");
+                }else {
+                    alert("登录失败!"+json.message);
+                }
+            },
+            "error":function () {
+                alert("FUCK OFF!");
+            }
+        });
+    });
+
+</script>
+</html>

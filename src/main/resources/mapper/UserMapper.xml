@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.security.mapper.UserMapper">
+    <resultMap id="UserMap" type="com.security.entity.User">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="gender" property="gender"></result>
+        <result column="credate" property="creDate"></result>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="com.security.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user
+            (username,password,gender,creDate)
+        value
+            (#{username},#{password},#{gender},#{creDate})
+    </insert>
+
+    <delete id="deleteUserById">
+        delete from t_user where id=#{id}
+    </delete>
+
+    <update id="updateUserByUsername">
+        update t_user set password=#{password} where username=#{username}
+    </update>
+
+    <select id="findAllUser" resultMap="UserMap">
+        select * from t_user
+    </select>
+
+    <select id="findUserByName" resultMap="UserMap">
+        select * from t_user where username=#{username}
+    </select>
+
+    <select id="findUserById" resultMap="UserMap">
+        select * from t_user where id=#{id}
+    </select>
+    
+
+
+</mapper>

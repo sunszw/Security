@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="../jq/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<form id="form-reg">
+    <table align="center">
+        <tr align="left">
+            <td>用户名</td>
+            <td><input name="username" type="text"></td>
+        </tr>
+        <tr align="left">
+            <td>密码</td>
+            <td><input name="password" type="password"></td>
+        </tr>
+        <tr align="left">
+            <td>性别</td>
+            <td>
+                <input name="gender" type="radio" value="1">男
+                <input name="gender" type="radio" value="0">女
+            </td>
+        </tr>
+        <tr align="center">
+            <td colspan="2"><input id="btn-reg" type="button" value="注册"></td>
+        </tr>
+    </table>
+</form>
+</body>
+<script type="text/javascript">
+    $("#btn-reg").click(function () {
+        $.ajax({
+            "url":"/user/reg",
+            "type":"post",
+            "data":$("#form-reg").serialize(),
+            "async":true,
+            "cache":true,
+            "dataType":"json",
+            "success":function (json) {
+                if(json.state==2000){
+                    alert("注册成功!");
+                }else {
+                    alert("注册失败!"+json.message);
+                }
+            },
+            "error":function () {
+                alert("FUCK OFF!");
+            }
+        });
+    });
+</script>
+
+</html>
